@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation ("com.uber:h3:3.7.2")
 }
 
 tasks.test {
