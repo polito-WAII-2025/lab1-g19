@@ -83,6 +83,10 @@ class Utils {
 
         }
 
+        fun computeAreaRadiusKm(maxDistanceFromStartingPoint: Int): Number {
+            return if (maxDistanceFromStartingPoint < 1) 0.1 else maxDistanceFromStartingPoint / 100
+        }
+
 
     }
 

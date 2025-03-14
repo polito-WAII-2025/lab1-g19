@@ -1,7 +1,7 @@
 package org.example
 
 import org.example.models.AnalysisResult
-import org.example.service.Analyser
+import org.example.models.MostFrequentedArea
 import org.example.utils.Utils
 import java.io.File
 
@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
 
     Utils.writeResultAsJson(
         AnalysisResult(
-            mostFrequentedArea = Analyser.computeMostFrequentedArea(waypoints)
+            mostFrequentedArea = MostFrequentedArea.computeMostFrequentedArea(waypoints)
         ),
         args[1])
 
