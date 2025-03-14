@@ -7,9 +7,8 @@ import org.yaml.snakeyaml.Yaml
 import java.nio.charset.StandardCharsets
 
 /**
- * Data Class per i parametri di configurazione
+ Data class for configuration parameters
  */
-
 data class Config (
     val earthRadiusKm: Double,
     val geofenceCenterLatitude: Double,
@@ -19,15 +18,22 @@ data class Config (
 )
 
 /**
- Data class per rappresentare un waypoint
+ Data class to represent a waypoint
  */
-
 data class Waypoint(val timestamp: Long, val latitude: Double, val longitude: Double)
 
 /**
- *Carica la configurazione di un file YAML
+ Data class for the result of the most frequented area.
  */
+data class MostFrequentedAreaResult(
+    val centralWaypoint: Waypoint,
+    val areaRadiusKm: Double,
+    val entriesCount: Int
+)
 
+/**
+ Loads the configuration from a YAML file
+ */
 fun loadConfig(filePath: String): Config {
     val yaml = Yaml()
     val file = File(filePath).readText()
@@ -43,9 +49,8 @@ fun loadConfig(filePath: String): Config {
 }
 
 /**
- carica i waypoint da un file CSV
+ Loads waypoints from a CSV file
  */
-
 fun parseCsv(filePath: String): List<Waypoint> {
     val file = File(filePath)
     val csvFormat = CSVFormat.DEFAULT.builder()

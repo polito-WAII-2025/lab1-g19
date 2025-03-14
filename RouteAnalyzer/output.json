@@ -7,6 +7,15 @@
     },
     "distanceKm" : 53.6990200268575
   },
+  "mostFrequentedArea" : {
+    "centralWaypoint" : {
+      "timestamp" : 1741884323321,
+      "latitude" : 45.08504,
+      "longitude" : 7.54799
+    },
+    "areaRadiusKm" : 5.36990200268575,
+    "entriesCount" : 14
+  },
   "waypointsOutsideGeofence" : {
     "centralWaypoint" : {
       "timestamp" : 0,

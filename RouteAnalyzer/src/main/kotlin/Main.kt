@@ -7,14 +7,18 @@ fun main(){
     val config = loadConfig(configPath)
     val waypoints = parseCsv(waypointsPath)
 
-    //Calcola il waypoint più lontano
+    //Calculate the farthest waypoint
     val(maxWp, maxDist) = maxDistanceFromStart(waypoints, config)
     println("Max Distance from Start: ${maxDist}km - Waypoint: $maxWp")
 
-    //Trova i Waypoint fuori dal Geofence
+    //Find the most frequented area
+    val mostFrequented = mostFrequentedArea(waypoints, maxDist)
+    println("Most frequented Area: ${mostFrequented.centralWaypoint}")
+
+    //Find waypoints outside the geofence
     val waypointsOutside = waypointsOutsideGeofence(waypoints, config)
     println("Waypoints Outside from Geofence: ${waypointsOutside.size}")
 
-    //Scrive i risultati in output.json
-    writeResultsToJson("output.json", maxWp, maxDist, waypointsOutside, config)
+    //Write the results to output.json
+    writeResultsToJson("output.json", maxWp, maxDist, mostFrequented, waypointsOutside, config)
 }

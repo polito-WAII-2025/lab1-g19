@@ -4,9 +4,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.io.File
 
 /**
- Scrive i risultati nel file output.json
+Write the results to the output.json file
  */
-fun writeResultsToJson(outputFile: String, maxWaypoint: Waypoint, maxDistance: Double, waypointsOutside: List<Waypoint>, config: Config){
+fun writeResultsToJson(outputFile: String, maxWaypoint: Waypoint, maxDistance: Double, mostFrequented: MostFrequentedAreaResult, waypointsOutside: List<Waypoint>, config: Config){
     val output = mapOf(
         "maxDistanceFromStart" to mapOf(
             "waypoint" to mapOf(
@@ -15,6 +15,15 @@ fun writeResultsToJson(outputFile: String, maxWaypoint: Waypoint, maxDistance: D
                 "longitude" to maxWaypoint.longitude
             ),
             "distanceKm" to maxDistance
+        ),
+        "mostFrequentedArea" to mapOf(
+            "centralWaypoint" to mapOf(
+                "timestamp" to mostFrequented.centralWaypoint.timestamp,
+                "latitude" to mostFrequented.centralWaypoint.latitude,
+                "longitude" to mostFrequented.centralWaypoint.longitude
+            ),
+            "areaRadiusKm" to mostFrequented.areaRadiusKm,
+            "entriesCount" to mostFrequented.entriesCount,
         ),
         "waypointsOutsideGeofence" to mapOf(
             "centralWaypoint" to mapOf(

@@ -3,7 +3,7 @@ package org.example
 import kotlin.math.*
 
 /**
- * Calcola la distanza tra due punti sulla Terra usando la formula dell'Haversine.
+ * Calculates the distance between two points on Earth using the Haversine formula.
  */
 fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double, radius: Double): Double {
     val dLat = Math.toRadians(lat2 - lat1)
@@ -14,7 +14,7 @@ fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double, ra
 }
 
 /**
- * Trova il waypoint più lontano dal punto di partenza.
+ * Finds the farthest waypoint from the starting point.
  */
 fun maxDistanceFromStart(waypoints: List<Waypoint>, config: Config): Pair<Waypoint, Double> {
     if (waypoints.isEmpty()) throw IllegalArgumentException("Lista waypoints vuota!")
@@ -35,7 +35,41 @@ fun maxDistanceFromStart(waypoints: List<Waypoint>, config: Config): Pair<Waypoi
 }
 
 /**
- * Trova i waypoint fuori dal geofence.
+ * Finds the most frequented area
+ */
+fun mostFrequentedArea(waypoints: List<Waypoint>, maxDistance: Double): MostFrequentedAreaResult {
+    if (waypoints.isEmpty()) throw IllegalArgumentException("Lista dei waypoint vuota!")
+
+    // Automatically calculates the radius
+    val areaRadiusKm = if (maxDistance < 1.0) 0.1 else maxDistance * 0.1
+
+    var bestWaypoint: Waypoint = waypoints.first()
+    var maxEntries = 0
+
+    // Analyzes each waypoint as a potential center for the most frequented area
+    for (wp in waypoints) {
+        val count = waypoints.count { other ->
+            haversineDistance(wp.latitude, wp.longitude, other.latitude, other.longitude, 6371.0) <= areaRadiusKm
+        }
+
+        // If an area with more nearby waypoints is found, updates the result
+        if (count > maxEntries) {
+            maxEntries = count
+            bestWaypoint = wp
+        }
+    }
+
+    return MostFrequentedAreaResult(
+        centralWaypoint = bestWaypoint,
+        areaRadiusKm = areaRadiusKm,
+        entriesCount = maxEntries
+    )
+}
+
+
+
+/**
+ Finds the waypoints outside the geofence.
  */
 fun waypointsOutsideGeofence(waypoints: List<Waypoint>, config: Config): List<Waypoint> {
     return waypoints.filter { wp ->
