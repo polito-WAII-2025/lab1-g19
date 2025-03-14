@@ -1,59 +1,73 @@
 package org.example.utils
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.uber.h3core.H3Core
-import org.example.models.Waypoint
+import org.example.models.AnalysisResult
+import org.example.models.WayPoint
+import org.example.models.WaypointMetadata
 import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
-import java.sql.Timestamp
+import java.lang.Boolean.FALSE
 import kotlin.text.Charsets.UTF_8
 
 class Utils {
 
     companion object {
+
         val h3 = H3Core.newInstance()
 
-        /**
-         * todo
-         * implement check on length of waypointDetails which should be 3
-         */
-        fun parseWayPointFile(path: String) : MutableList<Waypoint> {
+        var startingPoint = WaypointMetadata()
+
+        val mapper = ObjectMapper()
+            .writerWithDefaultPrettyPrinter()
+
+
+        fun parseWayPointFile(path: String): MutableList<WaypointMetadata> {
+            print("start parsing waypoint file from: $path")
             val file = File(path)
-            val waypoints = mutableListOf<Waypoint>()
+            val waypointMetadata = mutableListOf<WaypointMetadata>()
+            var isFirstLine = true
+            var cell: Long = 0
 
             file.forEachLine { waypoint ->
                 run {
                     val waypointDetails = waypoint.split(";")
-                    waypoints.add(
-                        Waypoint(
-                            timestamp = waypointDetails[0],
-                            laitude = waypointDetails[1].toDouble(),
-                            longitude = waypointDetails[2].toDouble(),
-                            cell = h3.geoToH3(waypointDetails[1].toDouble(), waypointDetails[2].toDouble(), 10)
+                    if (isFirstLine) {
+                        startingPoint = WaypointMetadata(
+                            waypoint = WayPoint(
+                                timestamp = waypointDetails[0],
+                                laitude = waypointDetails[1].toDouble(),
+                                longitude = waypointDetails[2].toDouble()
+                            ),
+                            cell = h3.geoToH3(waypointDetails[1].toDouble(), waypointDetails[2].toDouble(), 10),
+                            distanceFromStartingPoint = 0
+                        )
+                        isFirstLine = FALSE
+                    }
+                    cell = h3.geoToH3(waypointDetails[1].toDouble(), waypointDetails[2].toDouble(), 10)
+                    waypointMetadata.add(
+                        WaypointMetadata(
+                            waypoint = WayPoint(
+                                timestamp = waypointDetails[0],
+                                laitude = waypointDetails[1].toDouble(),
+                                longitude = waypointDetails[2].toDouble()
+                            ),
+                            cell = cell,
+                            distanceFromStartingPoint = h3.h3Distance(startingPoint.cell, cell)
                         )
                     )
                 }
 
             }
 
-            return waypoints
+            print("end parsing waypoint file from: $path")
+            return waypointMetadata
         }
 
-        fun writeResultAsJson(mostFrequentedArea: Collection<Waypoint>, path: String) {
-            val mostFrequentedAreaAsString = "\n\"mostFrequentedArea\" : [\n" +
-                    mostFrequentedArea.joinToString(",\n") {
-                        "{\n" +
-                                "\"timestamp\": \"${it.timestamp}\",\n" +
-                                "\"laitude\": ${it.laitude},\n" +
-                                "\"longitude\": ${it.longitude},\n" +
-                                "\"cell\": ${it.cell}\n" +
-                                "}"
-                    } + "\n]"
 
-            val result = "{" +
-                    "\n$mostFrequentedAreaAsString" +
-                    //todo add yours
-                    "\n }"
+        fun writeResultAsJson(analysisResult: AnalysisResult, path: String) {
+            print("start writing output file into: $path")
+
+            val result = mapper.writeValueAsString(analysisResult)
 
             val file = File(path)
 
@@ -65,12 +79,12 @@ class Utils {
 
             file.writeText(result, UTF_8)
 
+            print("end writing output file into: $path")
+
         }
 
 
     }
-
-
 
 
 }

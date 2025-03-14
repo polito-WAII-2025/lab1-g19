@@ -13,6 +13,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation ("com.uber:h3:3.7.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.0.1")
 }
 
 tasks.test {
