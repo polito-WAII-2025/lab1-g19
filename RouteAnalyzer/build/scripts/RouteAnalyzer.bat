@@ -70,7 +70,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\RouteAnalyzer-1.0-SNAPSHOT.jar;%APP_HOME%\lib\kotlin-stdlib-2.1.10.jar;%APP_HOME%\lib\commons-csv-1.9.0.jar;%APP_HOME%\lib\snakeyaml-2.0.jar;%APP_HOME%\lib\annotations-13.0.jar
+set CLASSPATH=%APP_HOME%\lib\RouteAnalyzer-1.0-SNAPSHOT.jar;%APP_HOME%\lib\jackson-databind-2.15.0.jar;%APP_HOME%\lib\jackson-annotations-2.15.0.jar;%APP_HOME%\lib\jackson-core-2.15.0.jar;%APP_HOME%\lib\jackson-module-kotlin-2.15.0.jar;%APP_HOME%\lib\kotlin-reflect-1.5.32.jar;%APP_HOME%\lib\kotlin-stdlib-2.1.10.jar;%APP_HOME%\lib\commons-csv-1.10.0.jar;%APP_HOME%\lib\snakeyaml-2.2.jar;%APP_HOME%\lib\annotations-13.0.jar;%APP_HOME%\lib\fastdoubleparser-0.8.0.jar
 
 
 @rem Execute RouteAnalyzer

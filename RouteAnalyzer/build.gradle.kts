@@ -12,6 +12,9 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("org.apache.commons:commons-csv:1.10.0")
+    implementation("org.yaml:snakeyaml:2.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
 }
 
 tasks.test {
