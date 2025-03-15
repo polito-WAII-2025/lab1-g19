@@ -17,7 +17,7 @@ fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double, ra
  * Finds the farthest waypoint from the starting point.
  */
 fun maxDistanceFromStart(waypoints: List<Waypoint>, config: Config): Pair<Waypoint, Double> {
-    if (waypoints.isEmpty()) throw IllegalArgumentException("Lista waypoints vuota!")
+    if (waypoints.isEmpty()) throw IllegalArgumentException("Waypoints list is empty!")
 
     val start = waypoints.first()
     var maxWaypoint = start
@@ -38,7 +38,7 @@ fun maxDistanceFromStart(waypoints: List<Waypoint>, config: Config): Pair<Waypoi
  * Finds the most frequented area
  */
 fun mostFrequentedArea(waypoints: List<Waypoint>, maxDistance: Double): MostFrequentedAreaResult {
-    if (waypoints.isEmpty()) throw IllegalArgumentException("Lista dei waypoint vuota!")
+    if (waypoints.isEmpty()) throw IllegalArgumentException("Waypoints list is empty!")
 
     // Automatically calculates the radius
     val areaRadiusKm = if (maxDistance < 1.0) 0.1 else maxDistance * 0.1
