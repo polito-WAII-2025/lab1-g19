@@ -1,5 +1,8 @@
 package org.example
 
+import org.example.utils.*
+import org.example.models.*
+
 fun main(){
     val configPath = "src/main/resources/custom-parameters.yml"
     val waypointsPath = "src/main/resources/waypoints.csv"
