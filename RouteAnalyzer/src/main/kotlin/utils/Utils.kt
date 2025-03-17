@@ -22,7 +22,7 @@ class Utils {
 
 
         fun parseWayPointFile(path: String): MutableList<WaypointMetadata> {
-            print("start parsing waypoint file from: $path")
+            println("start parsing waypoint file from: $path")
             val file = File(path)
             val waypointMetadata = mutableListOf<WaypointMetadata>()
             var isFirstLine = true
@@ -59,13 +59,13 @@ class Utils {
 
             }
 
-            print("end parsing waypoint file from: $path")
+            println("end parsing waypoint file from: $path")
             return waypointMetadata
         }
 
 
         fun writeResultAsJson(analysisResult: AnalysisResult, path: String) {
-            print("start writing output file into: $path")
+            println("start writing output file into: $path")
 
             val result = mapper.writeValueAsString(analysisResult)
 
@@ -79,7 +79,7 @@ class Utils {
 
             file.writeText(result, UTF_8)
 
-            print("end writing output file into: $path")
+            println("end writing output file into: $path")
 
         }
 

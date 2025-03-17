@@ -10,7 +10,7 @@ data class MostFrequentedArea(
 ){
     companion object{
         fun computeMostFrequentedArea(wayPoints: MutableList<WaypointMetadata>): MostFrequentedArea {
-            print("start computation of most frequented area")
+            println("start computation of most frequented area")
             val cellCount = mutableMapOf<Long, Int>()
             wayPoints.forEach { waypoint ->
                 cellCount[waypoint.cell] = cellCount.getOrDefault(waypoint.cell, 0) + 1
@@ -29,7 +29,7 @@ data class MostFrequentedArea(
                 areaRadiusKm = computeAreaRadiusKm(wayPoints.maxBy { it.distanceFromStartingPoint }.distanceFromStartingPoint),
                 entriesCount = cellWithMaxCount.value.toLong()
             )
-            print("end computation of most frequented area")
+            println("end computation of most frequented area")
             return result
         }
     }

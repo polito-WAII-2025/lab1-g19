@@ -7,7 +7,7 @@ import java.io.File
 
 fun main(args: Array<String>) {
 
-    print("start application")
+    println("start application")
 
     if(args.size < 2 || args[0].isBlank() || args[1].isBlank()){
         throw Exception("The passed args are not correct")
