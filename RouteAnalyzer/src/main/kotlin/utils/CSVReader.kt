@@ -1,7 +1,7 @@
-package org.example.utils
+package org.routeanalyzer.utils
 
 
-import org.example.models.Waypoint
+import org.routeanalyzer.models.Waypoint
 import java.io.File
 
 object CSVReader {

@@ -1,6 +1,6 @@
-package org.example.utils
+package org.routeanalyzer.utils
 
-import org.example.models.Waypoint
+import org.routeanalyzer.models.Waypoint
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import java.io.File

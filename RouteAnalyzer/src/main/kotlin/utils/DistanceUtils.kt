@@ -1,7 +1,7 @@
-package org.example.utils
+package org.routeanalyzer.utils
 
 import kotlin.math.*
-import org.example.models.Waypoint
+import org.routeanalyzer.models.Waypoint
 
 object DistanceUtils {
     private const val EARTH_RADIUS_KM = 6371.0  // Earth's radius in kilometers

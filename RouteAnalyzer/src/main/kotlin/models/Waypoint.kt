@@ -1,4 +1,4 @@
-package org.example.models
+package org.routeanalyzer.models
 
 import kotlinx.serialization.*
 
