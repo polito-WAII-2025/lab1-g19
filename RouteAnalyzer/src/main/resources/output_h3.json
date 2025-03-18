@@ -1,0 +1,19 @@
+{
+    "maxDistanceFromStartH3": {
+        "waypoint": {
+            "timestamp": 1741862254429,
+            "latitude": 45.0582,
+            "longitude": 7.7073
+        },
+        "distanceKm": 2.8312932523353678
+    },
+    "mostFrequentedAreaH3": {
+        "centralWaypoint": {
+            "timestamp": 1741862253973,
+            "latitude": 45.07776,
+            "longitude": 7.70151
+        },
+        "areaRadiusKm": 0.174375668,
+        "entriesCount": 2
+    }
+}
