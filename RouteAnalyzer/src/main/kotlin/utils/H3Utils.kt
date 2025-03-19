@@ -1,9 +1,11 @@
 package org.routeanalyzer.utils
+import com.uber.h3core.AreaUnit
 import org.routeanalyzer.models.Waypoint
 import com.uber.h3core.H3Core
 import com.uber.h3core.LengthUnit
 import com.uber.h3core.util.GeoCoord
 import kotlin.collections.*
+import kotlin.math.*
 
 object H3Utils {
 
@@ -93,6 +95,37 @@ object H3Utils {
        val hexIndex= h3.geoToH3(waypoint.latitude, waypoint.longitude, resolution)
         return(h3.h3ToGeo(hexIndex))
     }
+
+    fun waypointsOutsideGeofenceH3(
+        waypoints: List<Waypoint>,
+        centerLat: Double,
+        centerLon: Double,
+        geofenceRadiusKm: Double,
+        resolution: Int
+    ): Triple<List<Waypoint>, Int, Double> {
+        if (waypoints.isEmpty()) return Triple(emptyList(), 0, geofenceRadiusKm)
+
+        val geofenceHex = h3.geoToH3(centerLat, centerLon, resolution)
+
+// Use hex width instead of edge length for better approximation
+        val hexWidthKm = h3.hexArea(resolution, AreaUnit.km2).pow(0.5) * 2
+        val estimatedHexRadius = (geofenceRadiusKm / (hexWidthKm / 2)).toInt()
+
+        val geofenceHexes = h3.kRing(geofenceHex, estimatedHexRadius)
+
+        val waypointsOutside = mutableListOf<Waypoint>()
+
+        for (wp in waypoints) {
+            val waypointHex = h3.geoToH3(wp.latitude, wp.longitude, resolution)
+
+            if (!geofenceHexes.contains(waypointHex)) {
+                waypointsOutside.add(wp)
+            }
+        }
+
+        return Triple(waypointsOutside, waypointsOutside.size, geofenceRadiusKm)
+    }
+
 
 }
 

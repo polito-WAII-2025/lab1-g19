@@ -37,4 +37,21 @@ object DistanceUtils {
         return Pair(farthestWaypoint, maxDistance)
     }
 
+    fun waypointsOutsideGeofence(
+        waypoints: List<Waypoint>,
+        centerLat: Double,
+        centerLon: Double,
+        geofenceRadiusKm: Double
+    ): Triple<List<Waypoint>, Int, Double> {
+        if (waypoints.isEmpty()) return Triple(emptyList(), 0, geofenceRadiusKm)
+
+        val waypointsOutside = waypoints.filter { wp ->
+            val distance = haversine(wp.latitude, wp.longitude, centerLat, centerLon)
+            distance > geofenceRadiusKm
+        }
+
+        return Triple(waypointsOutside, waypointsOutside.size, geofenceRadiusKm)
+    }
+
+
 }

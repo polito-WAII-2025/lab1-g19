@@ -1,6 +1,4 @@
 package org.routeanalyzer.utils
-
-
 import org.routeanalyzer.models.Waypoint
 import java.io.File
 
