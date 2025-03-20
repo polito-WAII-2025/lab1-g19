@@ -1,9 +1,9 @@
 plugins {
     kotlin("jvm") version "2.1.10"
-    application
+    kotlin("plugin.serialization") version "2.1.10"
 }
 
-group = "org.example"
+group = "org.routeanalyzer"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -12,15 +12,13 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("org.yaml:snakeyaml:2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
-}
-
-application{
-    mainClass = "org.example.MainKt"
+    jvmToolchain(23)
 }
