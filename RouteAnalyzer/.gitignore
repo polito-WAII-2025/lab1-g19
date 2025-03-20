@@ -1,0 +1,35 @@
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Gradle build folders
+.gradle/
+build/
+
+# Local environment files
+*.log
+*.DS_Store
+
+# Kotlin specific
+/out/
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+
+# MacOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# JetBrains Rider
+.idea/
+
+# Logs
+*.log
+
+# Optional: compiled classes, jar files, etc.
+*.class
+*.jar
+*.war
+*.ear
