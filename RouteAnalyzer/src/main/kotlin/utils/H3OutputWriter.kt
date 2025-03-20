@@ -49,6 +49,7 @@ object H3OutputWriter {
         geofenceRadius: Double,
         geofenceCenter: Waypoint
     ) {
+     File(filePath).parentFile?.mkdirs()
         val outputData = H3OutputData(
             maxDistanceFromStartH3 = MaxDistanceFromStartH3(maxDistWaypoint, maxDistance),
             mostFrequentedAreaH3 = MostFrequentedAreaH3(

@@ -7,19 +7,26 @@ import org.routeanalyzer.utils.H3Utils
 import org.routeanalyzer.models.Waypoint
 import org.routeanalyzer.utils.ConfigReader
 
-fun main() {
-    val filePath = "RouteAnalyzer/src/main/resources/waypoints.csv"
+fun main(args: Array<String>) {
+    if (args.size < 2) {
+        println("Usage: java -jar app.jar <config-file> <waypoints-file>")
+        return
+    }
+
+    val configFilePath = args[0]
+    val waypointsFilePath = args[1]
+    println("Loading config from: $configFilePath")
+    val config = ConfigReader.readConfig(configFilePath)
+    //val filePath = "RouteAnalyzer/src/main/resources/waypoints.csv"
     val outputPath = "output.json"
-    val h3OutputPath = "RouteAnalyzer/src/main/resources/output_h3.json"
-    val waypoints = CSVReader.readWaypoints(filePath)
+    //val h3OutputPath = "RouteAnalyzer/src/main/resources/output_h3.json"
+    val h3OutputPath="/app/output/output_h3.json"
+    val waypoints = CSVReader.readWaypoints(waypointsFilePath)
     if (waypoints.isEmpty()) {
         println("No waypoints loaded.")
         return
     }
     println("Loaded ${waypoints.size} waypoints:")
-    val configFilePath = "RouteAnalyzer/src/main/resources/custom-parameters.yml"
-    val config = ConfigReader.readConfig(configFilePath)
-
 
     //waypoints.forEach { println(it) }
     val (farthestWaypoint, maxDistance) = DistanceUtils.maxDistanceFromStart(waypoints,config.earthRadiusKm)
