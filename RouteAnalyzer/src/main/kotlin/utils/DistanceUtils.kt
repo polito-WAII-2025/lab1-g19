@@ -4,9 +4,8 @@ import kotlin.math.*
 import org.routeanalyzer.models.Waypoint
 
 object DistanceUtils {
-    private const val EARTH_RADIUS_KM = 6371.0  // Earth's radius in kilometers
 
-    fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+    fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double, earthRadiusKm: Double): Double {
         val latDistance = Math.toRadians(lat2 - lat1)
         val lonDistance = Math.toRadians(lon2 - lon1)
 
@@ -16,10 +15,10 @@ object DistanceUtils {
 
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
-        return EARTH_RADIUS_KM * c  // Returns distance in kilometers
+        return earthRadiusKm * c  // Returns distance in kilometers
     }
 
-    fun maxDistanceFromStart(waypoints: List<Waypoint>) : Pair<Waypoint?,Double>{
+    fun maxDistanceFromStart(waypoints: List<Waypoint>,earthRadiusKm: Double) : Pair<Waypoint?,Double>{
         if (waypoints.isEmpty()){
             return Pair(null, 0.0)
         }
@@ -28,7 +27,7 @@ object DistanceUtils {
         var maxDistance = 0.0
 
     for(wp in waypoints){
-       val dist=haversine(start.latitude, start.longitude, wp.latitude, wp.longitude)
+       val dist=haversine(start.latitude, start.longitude, wp.latitude, wp.longitude, earthRadiusKm )
         if(dist > maxDistance){
         maxDistance=dist
         farthestWaypoint = wp
@@ -41,12 +40,13 @@ object DistanceUtils {
         waypoints: List<Waypoint>,
         centerLat: Double,
         centerLon: Double,
-        geofenceRadiusKm: Double
+        geofenceRadiusKm: Double,
+        earthRadiusKm: Double
     ): Triple<List<Waypoint>, Int, Double> {
         if (waypoints.isEmpty()) return Triple(emptyList(), 0, geofenceRadiusKm)
 
         val waypointsOutside = waypoints.filter { wp ->
-            val distance = haversine(wp.latitude, wp.longitude, centerLat, centerLon)
+            val distance = haversine(wp.latitude, wp.longitude, centerLat, centerLon, earthRadiusKm )
             distance > geofenceRadiusKm
         }
 

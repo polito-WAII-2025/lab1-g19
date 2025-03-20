@@ -81,7 +81,7 @@ object H3Utils {
 
         // Find the waypoint closest to the hexagon center
         val centralWaypoint = waypointsInHex.minByOrNull { wp ->
-            DistanceUtils.haversine(wp.latitude, wp.longitude, centerLat, centerLon)
+            h3.pointDist(GeoCoord( wp.latitude,wp.longitude),GeoCoord(wp.latitude,wp.longitude),LengthUnit.km)
         }
 
         // Get the hexagon size to define the area radius

@@ -14,6 +14,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.uber:h3:3.7.2")
+    implementation("org.yaml:snakeyaml:2.0")
 }
 
 

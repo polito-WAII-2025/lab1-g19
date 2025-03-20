@@ -5,6 +5,7 @@ import org.routeanalyzer.utils.OutputWriter
 import org.routeanalyzer.utils.H3OutputWriter
 import org.routeanalyzer.utils.H3Utils
 import org.routeanalyzer.models.Waypoint
+import org.routeanalyzer.utils.ConfigReader
 
 fun main() {
     val filePath = "RouteAnalyzer/src/main/resources/waypoints.csv"
@@ -16,8 +17,15 @@ fun main() {
         return
     }
     println("Loaded ${waypoints.size} waypoints:")
+    val configFilePath = "RouteAnalyzer/src/main/resources/custom-parameters.yml"
+    val config = ConfigReader.readConfig(configFilePath)
+
+
     //waypoints.forEach { println(it) }
-    val (farthestWaypoint, maxDistance) = DistanceUtils.maxDistanceFromStart(waypoints)
+    val (farthestWaypoint, maxDistance) = DistanceUtils.maxDistanceFromStart(waypoints,config.earthRadiusKm)
+    // Compute mostFrequentedAreaRadiusKm dynamically if missing( not used for now)
+    val mostFrequentedRadiusKm = config.mostFrequentedAreaRadiusKm ?: if (maxDistance < 1.0) 0.1 else maxDistance / 10
+
 
     if (farthestWaypoint != null) {
         println("Farthest waypoint from start: ${farthestWaypoint.latitude}, ${farthestWaypoint.longitude}")
@@ -42,16 +50,14 @@ fun main() {
         println("Area Radius (Hexagon edge length in Km): $areaRadiusH3 km")
         println("Number of visits: $visitCountH3")
     }
-    val geofenceCenterLat= 45.07081
-    val geofenceCenterLon = 7.66609
-    val geofenceRadiusKm = 100.0
+
     // Compute waypoints outside geofence using H3
     val (outsideWaypointsH3, outsideCountH3, _) =
-        H3Utils.waypointsOutsideGeofenceH3(waypoints, geofenceCenterLat, geofenceCenterLon, geofenceRadiusKm, h3Resolution)
+        H3Utils.waypointsOutsideGeofenceH3(waypoints, config.geofenceCenterLatitude, config.geofenceCenterLongitude, config.geofenceRadiusKm, h3Resolution)
 
 // Compute waypoints outside geofence using Haversine
     val (outsideWaypointsHaversine, outsideCountHaversine, _) =
-        DistanceUtils.waypointsOutsideGeofence(waypoints, geofenceCenterLat, geofenceCenterLon, geofenceRadiusKm)
+        DistanceUtils.waypointsOutsideGeofence(waypoints, config.geofenceCenterLatitude, config.geofenceCenterLongitude, config.geofenceRadiusKm,config.earthRadiusKm)
 
 // Print results for comparison
     println("Waypoints outside geofence (H3): $outsideCountH3")
@@ -74,8 +80,8 @@ fun main() {
         visitCount = visitCountH3,
         outsideWaypoints = outsideWaypointsH3,
         outsideCount = outsideCountH3,
-        geofenceRadius = geofenceRadiusKm,
-        geofenceCenter = Waypoint(0, geofenceCenterLat, geofenceCenterLon)
+        geofenceRadius = config.geofenceRadiusKm,
+        geofenceCenter = Waypoint(0, config.geofenceCenterLatitude, config.geofenceCenterLongitude)
     )
 
 
