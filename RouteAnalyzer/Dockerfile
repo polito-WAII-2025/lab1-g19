@@ -1,11 +1,14 @@
-# Use an official OpenJDK image as base
-FROM openjdk:17-jdk-slim
+FROM gradle:8.3-jdk17 AS build
 
-# Set the working directory inside the container
+WORKDIR /app
+COPY . .
+
+RUN gradle clean jar --no-daemon
+
+FROM eclipse-temurin:17-jdk-alpine
+
 WORKDIR /app
 
-# Copy the build files into the container
-COPY build/libs/RouteAnalyzer-1.0-SNAPSHOT-all.jar /app/app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
-# Define the default command (we'll pass parameters at runtime)
-CMD ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-jar", "app.jar"]

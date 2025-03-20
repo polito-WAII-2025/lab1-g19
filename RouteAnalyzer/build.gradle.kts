@@ -9,9 +9,19 @@ application {
     mainClass.set("org.routeanalyzer.MainKt")
 }
 
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "org.routeanalyzer.MainKt"
+tasks {
+    jar {
+        manifest {
+            attributes(
+                "Main-Class" to "org.routeanalyzer.MainKt"
+            )
+        }
+        from({
+            configurations.runtimeClasspath.get().filter { it.exists() }.map { file ->
+                if (file.isDirectory) file else zipTree(file)
+            }
+        })
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 }
 
@@ -24,9 +34,9 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.uber:h3:3.7.2")
     implementation("org.yaml:snakeyaml:2.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
 }
 
 

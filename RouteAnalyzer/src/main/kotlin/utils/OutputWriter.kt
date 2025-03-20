@@ -1,58 +1,36 @@
 package org.routeanalyzer.utils
 
-import org.routeanalyzer.models.Waypoint
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.routeanalyzer.models.*
 import java.io.File
 
-@Serializable
-data class OutputData(
-    val maxDistanceFromStart: MaxDistanceFromStart,
-    val mostFrequentedArea: MostFrequentedArea = MostFrequentedArea.empty(),
-    val waypointsOutsideGeofence: WaypointsOutsideGeofence = WaypointsOutsideGeofence.empty()
-)
 
-@Serializable
-data class MaxDistanceFromStart(
-    val waypoint: Waypoint,
-    val distanceKm: Double
-)
+class OutputWriter {
 
-@Serializable
-data class MostFrequentedArea(
-    val centralWaypoint: Waypoint,
-    val areaRadiusKm: Double,
-    val entriesCount: Int
-) {
-    companion object {
-        fun empty() = MostFrequentedArea(Waypoint(0, 0.0, 0.0), 0.0, 0)
-    }
-}
+    companion object{
 
-@Serializable
-data class WaypointsOutsideGeofence(
-    val centralWaypoint: Waypoint,
-    val areaRadiusKm: Double,
-    val count: Int,
-    val waypoints: List<Waypoint>
-) {
-    companion object {
-        fun empty() = WaypointsOutsideGeofence(Waypoint(0, 0.0, 0.0), 0.0, 0, emptyList())
-    }
-}
+        val mapper = ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .writerWithDefaultPrettyPrinter()
 
-object OutputWriter {
-    fun writeOutput(filePath: String, maxDistWaypoint: Waypoint?, maxDistance: Double) {
-        val maxDistData: MaxDistanceFromStart =
-            if (maxDistWaypoint != null) {
-                MaxDistanceFromStart(maxDistWaypoint, maxDistance)
-            } else {
-                MaxDistanceFromStart(Waypoint(0, 0.0, 0.0), 0.0)
-            }
+        fun writeH3Output(
+            filePath: String,
+            maxDistanceFromStart: MaxDistanceFromStartH3,
+            mostFrequentedArea: MostFrequentedAreaH3,
+            waypointsOutsideGeofence: WaypointsOutsideGeofenceH3
+        ) {
+            File(filePath).parentFile?.mkdirs()
+            val outputData = H3OutputData(
+                maxDistanceFromStart = maxDistanceFromStart,
+                mostFrequentedArea = mostFrequentedArea,
+                waypointsOutsideGeofence = waypointsOutsideGeofence
+            )
 
-        val outputData = OutputData(maxDistanceFromStart = maxDistData)
+            File(filePath).writeText(mapper.writeValueAsString(outputData))
 
-        val json = Json { prettyPrint = true }
-        File(filePath).writeText(json.encodeToString(outputData))
+            println("H3 Output saved to $filePath")
+        }
+
     }
 }
