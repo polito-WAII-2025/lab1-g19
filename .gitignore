@@ -1,27 +1,35 @@
-# IntelliJ IDEA
-.idea
-*.iws
+# IntelliJ IDEA project files
+.idea/
 *.iml
-*.ipr
 
-# Compiled class file
-*.class
+# Gradle build folders
+.gradle/
+build/
 
-# Log file
+# Local environment files
+*.log
+*.DS_Store
+
+# Kotlin specific
+/out/
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+
+# MacOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# JetBrains Rider
+.idea/
+
+# Logs
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# Optional: compiled classes, jar files, etc.
+*.class
 *.jar
 *.war
 *.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-.env

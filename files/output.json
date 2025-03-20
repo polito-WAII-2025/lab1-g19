@@ -1,0 +1,11 @@
+{
+  "mostFrequentedArea" : {
+    "centralWaypoint" : {
+      "timestamp" : "1741887019017.428",
+      "laitude" : 50.06407,
+      "longitude" : 21.41583
+    },
+    "areaRadiusKm" : 33,
+    "entriesCount" : 2
+  }
+}
