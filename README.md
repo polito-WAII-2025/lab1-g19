@@ -21,25 +21,10 @@ This is a **Kotlin-based backend application** that processes **route data** for
 - Gradle
 - Docker (optional, for running in a container)
 
-### 2️ Clone the Repository
-```bash
-git clone https://github.com/..../lab1-g19.git
-cd lab1-g19/RouteAnalyzer
-```
-
-### 3️ Build the Kotlin Application
-```bash
-./gradlew clean build
-```
-
-### 4️ Run the Application Locally
-```bash
-java -jar build/libs/RouteAnalyzer-1.0-SNAPSHOT-all.jar src/custom-parameters.yml src/main/resources/waypoints.csv
-```
-
 ---
 
 ## Running in Docker
+
 ### 1️ Build the Docker Image
 ```bash
 docker build -t route-analyzer .
@@ -82,26 +67,39 @@ timestamp;latitude;longitude
 Example:
 ```json
 {
-    "maxDistanceFromStartH3": {
-        "waypoint": {
-            "timestamp": 1741862253675,
-            "latitude": 45.07216,
-            "longitude": 7.69001
-        },
-        "distanceKm": 5.77
+  "maxDistanceFromStart": {
+    "waypoint": {
+      "timestamp": 1742377734343,
+      "latitude": 45.99472,
+      "longitude": 6.12624
     },
-    "mostFrequentedAreaH3": {
-        "centralWaypoint": {
-            "timestamp": 1741862253675,
-            "latitude": 45.07216,
-            "longitude": 7.69001
-        },
-        "areaRadiusKm": 0.69,
-        "entriesCount": 5
+    "distanceKm": 157.9201723646025
+  },
+  "mostFrequentedArea": {
+    "centralWaypoint": {
+      "timestamp": 1742377715848,
+      "latitude": 45.25019,
+      "longitude": 9.04498
     },
-    "waypointsOutsideGeofence": {
-        "count": 183
-    }
+    "areaRadiusKm": 0.174375668,
+    "entriesCount": 3
+  },
+  "waypointsOutsideGeofence": {
+    "centralWaypoint": {
+      "timestamp": 0,
+      "latitude": 45.07081,
+      "longitude": 7.66609
+    },
+    "areaRadiusKm": 100.0,
+    "count": 270,
+    "waypoints": [
+      {
+        "timestamp": 0,
+        "latitude": 45.07081,
+        "longitude": 7.66609
+      }
+    ]
+  }
 }
 ```
 
