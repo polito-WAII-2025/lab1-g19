@@ -2,7 +2,7 @@
 
 # Delete IntelliJ project files
 find . -name "*.iml" -type f -delete
-rm -rf .idea #ciao
+rm -rf .idea
 
 # Delete Gradle build folders
 rm -rf .gradle
