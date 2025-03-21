@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
     if (args.size < 2) {
         println("Usage: java -jar app.jar <config-file> <waypoints-file>")
         return
-    }
+    } //comment
 
     val configFilePath = args[0]
     val waypointsFilePath = args[1]
